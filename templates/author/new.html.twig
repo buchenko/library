@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Author{% endblock %}
+
+{% block body %}
+    <h1>Create new Author</h1>
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <a class="btn btn-secondary" href="{{ path('app_author_index') }}">back to list</a>
+        </div>
+    </div>
+    <div class="row">
+        {{ include('author/_form.html.twig') }}
+    </div>
+{% endblock %}

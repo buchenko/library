@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book{% endblock %}
+
+{% block body %}
+    <h1>Book</h1>
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <a class="btn btn-success" href="{{ path('app_book_edit', {'id': book.id}) }}">edit</a>
+        </div>
+        <div class="col-md-4">
+            <a class="btn btn-secondary" href="{{ path('app_book_index') }}">back to list</a>
+        </div>
+        <div class="col-md-4">
+            {{ include('book/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ book.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ book.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ book.description }}</td>
+            </tr>
+            <tr>
+                <th>Year</th>
+                <td>{{ book.year }}</td>
+            </tr>
+            <tr>
+                <th>Authors</th>
+                <td>{{ book.authorsAsString }}</td>
+            </tr>
+            <tr>
+                <th>Cover</th>
+                <td>
+                    {% if (book.cover) %}
+                        <img src="/covers{{ asset(book.cover) }}" alt="{{ book.cover }}">
+                    {% else%}
+                        No cover
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

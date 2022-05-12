@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book index{% endblock %}
+
+{% block body %}
+    <h1>Book index</h1>
+    <div id="accordion">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link {{ isSubmitted ? '' : 'collapsed' }}" data-toggle="collapse"
+                            data-target="#collapseOne"
+                            aria-expanded="true" aria-controls="collapseOne">
+                        Filter books
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse {{ isSubmitted ? 'show' : '' }}" aria-labelledby="headingOne"
+                 data-parent="#accordion">
+                <div class="card-body">
+                    <div class="input-group">
+                        {{ include('book/_search_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Year</th>
+            <th>Cover</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.description }}</td>
+                <td>{{ book.year }}</td>
+                <td>
+                    {% if (book.cover) %}
+                        <a href="{{ asset('covers/' ~ book.cover) }} " target="_blank">View cover</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('app_book_show', {'id': book.id}) }}">show</a>
+                    <a href="{{ path('app_book_edit', {'id': book.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('app_book_new') }}">Create new</a>
+{% endblock %}

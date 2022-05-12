@@ -1,0 +1,82 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-md-6">
+
+        <div class="form-group">
+            <div class="input-group">
+                {{ form_widget(form.title, {'attr': {'placeholder': 'title'|trans}}) }}
+                <div class="form-error">
+                    {{ form_errors(form.title) }}
+                </div>
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="fas fa-clients"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                {{ form_widget(form.description, {'attr': {'placeholder': 'description'|trans}}) }}
+                <div class="form-error">
+                    {{ form_errors(form.description) }}
+                </div>
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="fas fa-clients"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                {{ form_widget(form.year) }}
+                <div class="form-error">
+                    {{ form_errors(form.year) }}
+                </div>
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="fas fa-clients"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <div class="input-group">
+                {{ form_widget(form.authors) }}
+                <div class="form-error">
+                    {{ form_errors(form.authors) }}
+                </div>
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="fas fa-clients"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            {{ form_widget(form.coverFile) }}
+        </div>
+    </div>
+    {% if (book.cover) %}
+        <div class="col-md-12">
+            <img src="{{ asset('covers/' ~ book.cover) }}" alt="{{ book.cover }}">
+        </div>
+    {% endif %}
+
+    <div class="col-md-12 text-center mt-20">
+        <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    </div>
+</div>
+
+{{ form_end(form) }}

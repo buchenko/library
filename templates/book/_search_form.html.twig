@@ -1,0 +1,22 @@
+{{ form_start(form) }}
+<table class="table">
+        <tbody>
+            <tr>
+                <td>ID</td>
+                <td>title</td>
+                <td>description</td>
+                <td>year</td>
+                <td>author</td>
+            </tr>
+            <tr>
+                <td>{{ form_widget(form.id) }}</td>
+                <td>{{ form_widget(form.title) }}</td>
+                <td>{{ form_widget(form.description) }}</td>
+                <td>{{ form_widget(form.year) }}</td>
+                <td>{{ form_widget(form.author) }}</td>
+                <td><button class="btn btn-danger">Search</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+{{ form_end(form) }}

@@ -2,11 +2,14 @@
 
 namespace App\Repository;
 
+use App\Dto\FilterBooks;
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * @extends ServiceEntityRepository<Book>
@@ -45,6 +48,36 @@ class BookRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    public function filterByFields(FilterBooks $filterBooks)
+    {
+        $query = $this->createQueryBuilder('b');
+        if ($filterBooks->getTitle()) {
+            $query->andWhere('b.title like :title')
+                ->setParameter('title', '%' . $filterBooks->getTitle() . '%');
+        }
+        if ($filterBooks->getDescription()) {
+            $query->andWhere('b.description like :description')
+                ->setParameter('description', '%' . $filterBooks->getDescription() . '%');
+        }
+        if ($filterBooks->getYear()) {
+            $query->andWhere('b.year = :year')
+                ->setParameter('year', $filterBooks->getYear());
+        }
+        if ($filterBooks->getId()) {
+            $query->andWhere('b.id = :id')
+                ->setParameter('id', $filterBooks->getId());
+        }
+        if ($filterBooks->getAuthor()) {
+            $query->join('b.authors','a', Join::WITH, 'a.id = :authorId')
+                ->setParameter('authorId', $filterBooks->getAuthor()->getId());
+        }
+
+        $query->orderBy('b.id', 'ASC')
+            ->setMaxResults(10);
+
+        return $query->getQuery()->getResult();
     }
 
     // /**
