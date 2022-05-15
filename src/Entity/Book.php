@@ -41,7 +41,7 @@ class Book
     private $cover;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Author::class, inversedBy="books")
+     * @ORM\ManyToMany(targetEntity=Author::class, inversedBy="books", fetch="EAGER")
      */
     private $authors;
 

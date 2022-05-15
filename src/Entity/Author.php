@@ -30,6 +30,11 @@ class Author
      */
     private $books;
 
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $countBooks;
+
     public function __construct()
     {
         $this->books = new ArrayCollection();
@@ -75,6 +80,18 @@ class Author
         if ($this->books->removeElement($book)) {
             $book->removeAuthor($this);
         }
+
+        return $this;
+    }
+
+    public function getCountBooks(): ?int
+    {
+        return $this->countBooks;
+    }
+
+    public function setCountBooks(int $countBooks): self
+    {
+        $this->countBooks = $countBooks;
 
         return $this;
     }

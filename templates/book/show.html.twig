@@ -36,7 +36,14 @@
             </tr>
             <tr>
                 <th>Authors</th>
-                <td>{{ book.authorsAsString }}</td>
+                <td>
+                    {% for author in book.authors %}
+                        {{ author.name }}
+                        {% if loop.last != true %}
+                            ,
+                        {% endif %}
+                    {% endfor %}
+                </td>
             </tr>
             <tr>
                 <th>Cover</th>
