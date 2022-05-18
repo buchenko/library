@@ -2,19 +2,23 @@
 
 namespace App\Controller;
 
+use App\DataMapper\BookDataMapper;
 use App\Dto\FilterBooks;
 use App\Entity\Book;
+use App\Dto\Book as BookDto;
 use App\Form\BookType;
 use App\Form\SearchBookType;
 use App\Repository\BookRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/book")
@@ -96,6 +100,29 @@ class BookController extends AbstractController
             'book' => $book,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/update", name="app_book_update", methods={"GET", "POST"})
+     */
+    public function update(BookDto $dto, Book $book, BookRepository $bookRepository, ValidatorInterface $validator): JsonResponse
+    {
+        $errors = $validator->validate($dto);
+        if (count($errors) > 0) {
+            $errorsString = '';
+            foreach ($errors as $error) {
+                $errorsString = $error->getMessage();
+                break;
+            }
+
+            return new JsonResponse($errorsString, Response::HTTP_BAD_REQUEST);
+        }
+
+        $authorDataMapper = new BookDataMapper();
+        $authorDataMapper->mapDtoToEntity($dto, $book);
+        $bookRepository->add($book);
+
+        return new JsonResponse(['data'=> 'ok']);
     }
 
     /**

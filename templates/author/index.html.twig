@@ -7,18 +7,28 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Count of Books</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Count of Books</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for author in authors %}
             <tr>
                 <td>{{ author.id }}</td>
-                <td>{{ author.name }}</td>
+
+                <td>
+                    <content-editable
+                            id="id-{{ author.id }}"
+                            data-field="name"
+                            data-url="{{ path('app_author_update', {'id': author.id}) }}"
+                            data-value="{{ author.name }}"
+                    >{{ author.name }}
+                    </content-editable>
+                </td>
+
                 <td>{{ author.countBooks }}</td>
                 <td>
                     <a href="{{ path('app_author_show', {'id': author.id}) }}">show</a>

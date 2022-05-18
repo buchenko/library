@@ -111,15 +111,6 @@ class Book
         return $this->authors;
     }
 
-    public function getAuthorsAsString(): string
-    {
-        $authors = array_map(function (Author $author){
-            return $author->getName();
-        }, $this->authors->toArray());
-
-        return implode(", ", $authors);
-    }
-
     public function addAuthor(Author $author): self
     {
         if (!$this->authors->contains($author)) {

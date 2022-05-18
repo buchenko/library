@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\DataMapper\AuthorDataMapper;
+use App\Dto\Author as AuthorDto;
 use App\Entity\Author;
 use App\Form\AuthorType;
 use App\Repository\AuthorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/author")
@@ -72,6 +76,23 @@ class AuthorController extends AbstractController
             'author' => $author,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/update", name="app_author_update", methods={"GET", "POST"})
+     */
+    public function update(AuthorDto $dto, Author $author, AuthorRepository $authorRepository, ValidatorInterface $validator): JsonResponse
+    {
+        $errors = $validator->validate($dto);
+        if (count($errors) > 0) {
+            return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
+        }
+
+        $authorDataMapper = new AuthorDataMapper();
+        $authorDataMapper->mapDtoToEntity($dto, $author);
+        $authorRepository->add($author);
+
+        return new JsonResponse(['data'=> 'ok']);
     }
 
     /**

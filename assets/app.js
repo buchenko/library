@@ -9,4 +9,25 @@
 import './styles/app.css';
 
 // start the Stimulus application
-import './bootstrap';
+const $ = require('jquery');
+require('bootstrap');
+import 'content-editable/dist/content-editable';
+
+const editables = document.querySelectorAll('content-editable');
+editables.forEach(function (editable) {
+    editable.addEventListener('edit', (e) => {
+        e.preventDefault();
+        $.post(e.target.dataset.url,
+            {
+                'field': e.target.dataset.field,
+                'value': e.target.innerHTML
+            })
+            .done(function (data, textStatus, jqXHR) {
+                e.target.dataset.value = e.target.innerHTML;
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                e.target.innerHTML = e.target.dataset.value;
+                alert(jqXHR.responseText);
+            });
+    });
+});

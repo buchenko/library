@@ -41,9 +41,31 @@
         {% for book in books %}
             <tr>
                 <td>{{ book.id }}</td>
-                <td>{{ book.title }}</td>
-                <td>{{ book.description }}</td>
-                <td>{{ book.year }}</td>
+                <td>
+                    <content-editable
+                            data-field="title"
+                            data-url="{{ path('app_book_update', {'id': book.id}) }}"
+                            data-value="{{ book.title }}"
+                    >{{ book.title }}
+                    </content-editable>
+                </td>
+                <td>
+                    <content-editable
+                            data-field="description"
+                            data-url="{{ path('app_book_update', {'id': book.id}) }}"
+                            data-value="{{ book.description }}"
+                    >{{ book.description }}
+                    </content-editable>
+                </td>
+                <td>
+                    <content-editable
+                            inputmode="numeric"
+                            data-field="year"
+                            data-url="{{ path('app_book_update', {'id': book.id}) }}"
+                            data-value="{{ book.year }}"
+                    >{{ book.year }}
+                    </content-editable>
+                </td>
                 <td>
                     {% if (book.cover) %}
                         <a href="{{ asset('covers/' ~ book.cover) }} " target="_blank">View cover</a>
