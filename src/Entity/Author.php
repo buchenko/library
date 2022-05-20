@@ -33,7 +33,7 @@ class Author
     /**
      * @ORM\Column(type="smallint")
      */
-    private $countBooks;
+    private $countBooks = 0;
 
     public function __construct()
     {

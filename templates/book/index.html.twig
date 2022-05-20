@@ -68,7 +68,7 @@
                 </td>
                 <td>
                     {% if (book.cover) %}
-                        <a href="{{ asset('covers/' ~ book.cover) }} " target="_blank">View cover</a>
+                        <a href="{{ asset(book.getCoverPath) }} " target="_blank">View cover</a>
                     {% endif %}
                 </td>
                 <td>

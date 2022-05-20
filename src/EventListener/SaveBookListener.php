@@ -145,6 +145,5 @@ class SaveBookListener
         $values = ['authorIds' => $authorIds];
         $types = ['authorIds' => Connection::PARAM_INT_ARRAY];
         $connection->executeStatement($sqlUpdate, $values, $types);
-
     }
 }

@@ -35,10 +35,23 @@ services:
 
     App\EventListener\SaveBookListener:
         tags:
-#            - { name: doctrine.event_subscriber, connection: default }
             - { name: 'doctrine.orm.entity_listener', event: 'prePersist', entity: 'App\Entity\Book' }
             - { name: 'doctrine.orm.entity_listener', event: 'postPersist', entity: 'App\Entity\Book' }
             - { name: 'doctrine.orm.entity_listener', event: 'preUpdate', entity: 'App\Entity\Book' }
             - { name: 'doctrine.orm.entity_listener', event: 'postUpdate', entity: 'App\Entity\Book' }
             - { name: 'doctrine.orm.entity_listener', event: 'preRemove', entity: 'App\Entity\Book' }
             - { name: 'doctrine.orm.entity_listener', event: 'postRemove', entity: 'App\Entity\Book' }
+
+    admin.author:
+        class: App\Admin\AuthorAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Author, manager_type: orm, label: Author }
+
+    admin.book:
+        class: App\Admin\BookAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Book, manager_type: orm, label: Book }
+    App\EventListener\UploadFileBookListener:
+        tags:
+            - { name: 'doctrine.orm.entity_listener', event: 'prePersist', entity: 'App\Entity\Book' }
+            - { name: 'doctrine.orm.entity_listener', event: 'preUpdate', entity: 'App\Entity\Book' }

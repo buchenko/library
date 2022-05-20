@@ -49,7 +49,7 @@
                 <th>Cover</th>
                 <td>
                     {% if (book.cover) %}
-                        <img src="/covers{{ asset(book.cover) }}" alt="{{ book.cover }}">
+                        <img src="{{ asset(book.getCoverPath) }}" alt="{{ book.cover }}">
                     {% else%}
                         No cover
                     {% endif %}

@@ -3,9 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use App\Service\FileUploader;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\Exception\UploadException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
@@ -44,6 +48,15 @@ class Book
      * @ORM\ManyToMany(targetEntity=Author::class, inversedBy="books", fetch="EAGER")
      */
     private $authors;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated;
+
+    private ?UploadedFile $file = null;
+
+    public const COVERS_PATH = '/covers';
 
     public function __construct()
     {
@@ -111,6 +124,15 @@ class Book
         return $this->authors;
     }
 
+    public function getAuthorsAsString(): string
+    {
+        $authors = array_map(function (Author $author) {
+            return $author->getName();
+        }, $this->authors->toArray());
+
+        return implode(", ", $authors);
+    }
+
     public function addAuthor(Author $author): self
     {
         if (!$this->authors->contains($author)) {
@@ -125,5 +147,48 @@ class Book
         $this->authors->removeElement($author);
 
         return $this;
+    }
+
+    public function getUpdated(): ?\DateTimeInterface
+    {
+        return $this->updated;
+    }
+
+    public function setUpdated(?\DateTimeInterface $updated): self
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    public function setFile(?UploadedFile $file = null): void
+    {
+        $this->file = $file;
+    }
+
+    public function getFile(): ?UploadedFile
+    {
+        return $this->file;
+    }
+
+    public function refreshUpdated(): void
+    {
+        $this->setUpdated(new \DateTime());
+    }
+
+    /**
+     * @return string
+     */
+    public function getCoversPath(): string
+    {
+        return static::COVERS_PATH;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCoverPath(): string
+    {
+        return $this->getCoversPath() . '/' . $this->getCover();
     }
 }
