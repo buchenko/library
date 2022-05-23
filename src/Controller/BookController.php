@@ -10,6 +10,7 @@ use App\Form\BookType;
 use App\Form\SearchBookType;
 use App\Repository\BookRepository;
 use App\Service\FileUploader;
+use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,6 +39,20 @@ class BookController extends AbstractController
             'books' => $bookRepository->filterByFields($filterBooks),
             'form' => $form->createView(),
             'isSubmitted'=> $form->isSubmitted(),
+        ]);
+    }
+
+    /**
+     * @Route("/co-authors", name="app_book_co_authors", methods={"GET"})
+     * @throws Exception
+     */
+    public function coAuthors(Request $request, BookRepository $bookRepository): Response
+    {
+        $type = $request->get('type', '');
+        $bookRepository->setAuthorsLimit($request->get('limit'));
+
+        return $this->render('book/co_authors.html.twig', [
+            'books' => $bookRepository->getCoAuthors($type),
         ]);
     }
 
