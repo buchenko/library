@@ -302,6 +302,9 @@
             "ref": "30dba2f9b719f21b497a6302f41aac07f9079e13"
         }
     },
+    "sonata-project/user-bundle": {
+        "version": "5.1.0"
+    },
     "symfony/asset": {
         "version": "v4.4.40"
     },
