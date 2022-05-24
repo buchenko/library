@@ -1,9 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Book index{% endblock %}
+{% block title %}Books by count authors{% endblock %}
 
 {% block body %}
-    <h1>Book index</h1>
+    <h1>Books with {{ limit }} coauthors and more</h1>
+    <p>
+        You can use query params "<b>type</b>" with value "<b>orm</b>" or "<b>raw</b>". default value is "raw"
+    </p>
+    <p>
+        You can use query params "<b>limit</b>" for set count authors for filter. default value is "3" (3 and more)
+    </p>
+    <p>
+        Example: ?type=orm&limit=2
+    </p>
     <table class="table">
         <thead>
         <tr>

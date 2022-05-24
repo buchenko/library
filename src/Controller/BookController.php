@@ -53,6 +53,7 @@ class BookController extends AbstractController
 
         return $this->render('book/co_authors.html.twig', [
             'books' => $bookRepository->getCoAuthors($type),
+            'limit' => $bookRepository->getAuthorsLimit(),
         ]);
     }
 
